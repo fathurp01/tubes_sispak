@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ app_name }} | Hasil</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      background: linear-gradient(135deg, #f8f5f0 0%, #f0f8f5 100%);
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-900 pb-20">
+  <main class="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
+    <div class="text-center mb-10">
+      <div class="inline-block rounded-full bg-teal-100/80 px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider text-teal-800 shadow-sm mb-4">
+        Analisis Selesai
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900">
+        Rekomendasi Karier Anda
+      </h1>
+    </div>
+
+    <!-- MAIN ROLE RECOMMENDATION -->
+    {% set top = ranking[0] %}
+    <section class="rounded-[2.5rem] bg-white shadow-2xl overflow-hidden mb-10 border border-slate-100">
+      <div class="bg-gradient-to-r from-teal-500 to-emerald-500 px-6 py-10 text-center text-white sm:px-10">
+        <p class="text-sm font-bold uppercase tracking-widest text-teal-100 mb-2">Kecocokan Tertinggi</p>
+        <h2 class="text-4xl sm:text-5xl font-extrabold mb-6">{{ top.role }}</h2>
+        <div class="flex flex-wrap justify-center gap-3 text-sm sm:text-base">
+          <span class="rounded-full bg-white/20 px-5 py-2 font-bold backdrop-blur-md">{{ top.label }}</span>
+          <span class="rounded-full bg-white text-teal-600 px-5 py-2 font-black shadow-lg">{{ '%.0f'|format(top.score) }}% Match</span>
+        </div>
+      </div>
+
+      <div class="p-6 sm:p-10 space-y-8">
+        <div class="grid gap-8 sm:grid-cols-2">
+          <!-- Strengths -->
+          <div>
+            <div class="flex items-center gap-2 mb-4">
+              <div class="flex h-8 w-8 items-center justify-center rounded-full bg-teal-100 text-teal-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+              </div>
+              <h3 class="text-lg font-bold text-slate-800">Kekuatan Utama</h3>
+            </div>
+            <ul class="space-y-3">
+              {% if top.is_balanced %}
+              <li class="rounded-2xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">Kekuatan merata di seluruh skill yang relevan untuk role ini.</li>
+              {% else %}
+                {% for line in top.strength_lines %}
+                <li class="rounded-2xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 leading-relaxed">{{ line.split(': ')[0] }} <span class="text-teal-600 font-bold ml-1">{{ line.split(': ')[1] }}</span></li>
+                {% endfor %}
+              {% endif %}
+            </ul>
+          </div>
+
+          <!-- Gaps -->
+          <div>
+            <div class="flex items-center gap-2 mb-4">
+              <div class="flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 text-amber-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+              </div>
+              <h3 class="text-lg font-bold text-slate-800">Area Pengembangan</h3>
+            </div>
+            <ul class="space-y-3">
+              {% if top.gap_lines %}
+                {% for line in top.gap_lines %}
+                <li class="rounded-2xl bg-amber-50/50 px-4 py-3 text-sm font-semibold text-slate-700 leading-relaxed">{{ line.split(': ')[0] }} <span class="text-amber-600 font-bold ml-1">{{ line.split(': ')[1] }}</span></li>
+                {% endfor %}
+              {% else %}
+              <li class="rounded-2xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">Tidak ada gap signifikan untuk role ini.</li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="pt-6 border-t border-slate-100">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.34.208-.646.477-.859a4 4 0 10-4.954 0c.27.213.462.519.476.859h4.002z" /></svg>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800">Langkah Selanjutnya</h3>
+          </div>
+          <ul class="grid gap-3 sm:grid-cols-2">
+            {% for reco in top.recommendations %}
+            <li class="rounded-2xl bg-white border border-slate-200 px-5 py-4 text-sm font-medium text-slate-600 shadow-sm">{{ reco }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOGGLE BUTTON FOR OTHERS -->
+    <div class="text-center mb-8">
+      <button id="toggleBtn" class="inline-flex items-center gap-2 rounded-full bg-slate-200/60 px-6 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-300/60 hover:text-slate-800">
+        <span id="toggleText">Lihat Role Lainnya</span>
+        <svg id="toggleIcon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- OTHER ROLES (HIDDEN BY DEFAULT) -->
+    <div id="othersContainer" class="hidden space-y-5 mb-12">
+      {% for item in ranking[1:] %}
+      <div class="rounded-3xl bg-white p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 transition hover:border-teal-200">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h3 class="text-2xl font-extrabold text-slate-900">{{ item.role }}</h3>
+            <p class="text-sm font-bold text-teal-600 mt-1">{{ item.label }}</p>
+          </div>
+          <div class="inline-flex items-center justify-center rounded-3xl bg-slate-100 px-5 py-2 font-black text-slate-800">
+            {{ '%.0f'|format(item.score) }}% Level Cocok
+          </div>
+        </div>
+
+        <div class="text-sm text-slate-600">
+          <h4 class="font-bold text-slate-800 mb-2">Insight Singkat:</h4>
+          <ul class="space-y-2 list-disc pl-5 marker:text-teal-400">
+            {% if item.gap_lines %}
+            <li>Fokus perbaiki: <span class="font-semibold">{{ item.gap_lines[0].split(' - ')[1].split(':')[0] }}</span></li>
+            {% endif %}
+            <li>{{ item.recommendations[0] }}</li>
+          </ul>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12 border-t border-slate-200/60 pt-10">
+      <a
+        href="/quiz/1"
+        class="w-full sm:w-auto rounded-full border-2 border-slate-300 bg-transparent px-8 py-4 text-center text-sm font-bold text-slate-600 transition hover:border-slate-400 hover:bg-slate-100"
+      >
+        Edit Jawaban
+      </a>
+      <form method="post" action="/result" class="w-full sm:w-auto">
+        <button
+          type="submit"
+          class="w-full sm:w-auto rounded-full bg-slate-900 px-8 py-4 text-sm font-bold text-white shadow-xl transition-all hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-2xl"
+        >
+          Coba Lagi dari Awal
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    const btn = document.getElementById('toggleBtn');
+    const container = document.getElementById('othersContainer');
+    const text = document.getElementById('toggleText');
+    const icon = document.getElementById('toggleIcon');
+
+    btn.addEventListener('click', () => {
+      container.classList.toggle('hidden');
+      if (container.classList.contains('hidden')) {
+        text.textContent = 'Lihat Role Lainnya';
+        icon.classList.remove('rotate-180');
+      } else {
+        text.textContent = 'Sembunyikan Role Lainnya';
+        icon.classList.add('rotate-180');
+      }
+    });
+  </script>
+</body>
+</html>

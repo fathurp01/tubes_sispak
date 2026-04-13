@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ app_name }} | Onboarding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      background: linear-gradient(135deg, #f8f5f0 0%, #f0f8f5 100%);
+    }
+
+    .brand {
+      font-family: "Space Grotesk", sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-900 flex items-center justify-center">
+  <main class="w-full max-w-2xl px-4 text-center py-10">
+    <div class="mb-4 inline-block rounded-full bg-teal-100/80 px-5 py-2 shadow-sm">
+      <span class="brand text-sm font-extrabold uppercase tracking-[0.2em] text-teal-800">{{ app_name }}</span>
+    </div>
+
+    <h1 class="mt-6 text-5xl font-extrabold tracking-tight text-slate-900 sm:text-6xl">
+      Sistem Pakar Karier.
+    </h1>
+    
+    <p class="mx-auto mt-6 max-w-lg text-lg leading-relaxed text-slate-600 sm:text-xl">
+      Temukan peran IT yang paling sesuai dengan keahlian Anda melalui assessment interaktif dari ahlinya.
+    </p>
+
+    <form method="post" class="mt-12">
+      <button
+        type="submit"
+        class="group inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-teal-500 to-emerald-500 px-8 py-4 text-lg font-bold text-white shadow-xl shadow-teal-500/30 transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-teal-500/40"
+      >
+        Mulai Sekarang
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </button>
+    </form>
+    
+    <div class="mt-8 text-sm text-slate-400 font-medium">
+      Total {{ total_questions }} Pertanyaan
+    </div>
+  </main>
+</body>
+</html>
