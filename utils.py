@@ -5,102 +5,147 @@ from skfuzzy import control as ctrl
 
 SKILL_METRICS = [
 	{
+		"category": "Programming Logic",
+		"skill": "Kemampuan problem solving, clean code, dan logika pemrograman",
+		"question": "Seberapa percaya diri Anda dalam memecahkan masalah dengan logika pemrograman dan menulis clean code?",
+	},
+	{
 		"category": "Web Logic & JS",
-		"skill": "JavaScript/NodeJS & Logic",
-		"question": "Seberapa sering Anda menggunakan JavaScript atau NodeJS untuk menyelesaikan logika bisnis di proyek nyata?",
+		"skill": "Kemahiran JavaScript/NodeJS & asynchronous programming",
+		"question": "Seberapa mahir Anda menggunakan JavaScript/NodeJS, termasuk konsep asynchronous programming?",
 	},
 	{
 		"category": "Frontend UI",
-		"skill": "HTML, CSS, Tailwind, Responsive Design",
-		"question": "Seberapa percaya diri Anda membangun antarmuka responsif yang konsisten di berbagai ukuran layar?",
+		"skill": "HTML, CSS, Tailwind, responsive & cross-browser design",
+		"question": "Seberapa baik Anda mengimplementasikan desain UI yang responsif menggunakan HTML, CSS, atau Tailwind?",
 	},
 	{
 		"category": "JS Framework",
-		"skill": "React, Vue, Angular",
-		"question": "Sejauh mana Anda dapat mengembangkan fitur secara mandiri menggunakan React, Vue, atau Angular?",
+		"skill": "React, Vue, Next.js, state management",
+		"question": "Seberapa sering Anda mengembangkan aplikasi dengan framework seperti React/Vue/Next.js dan mengelola state-nya?",
 	},
 	{
 		"category": "Mobile Development",
-		"skill": "Flutter, React Native, Kotlin, Swift",
-		"question": "Seberapa siap Anda membangun dan merilis aplikasi mobile dari tahap development sampai build release?",
+		"skill": "Flutter, Kotlin, Swift, Android/iOS development",
+		"question": "Seberapa dalam pemahaman Anda dalam membuat aplikasi mobile (Android/iOS) menggunakan Flutter, Kotlin, atau Swift?",
 	},
 	{
 		"category": "Server Side",
-		"skill": "Python, Java, PHP, Ruby",
-		"question": "Seberapa kuat pengalaman Anda membangun fitur backend dari desain endpoint sampai implementasi?",
+		"skill": "Backend programming (Go, Node.js, Python, Java)",
+		"question": "Seberapa sering Anda menulis kode backend menggunakan Go, Node.js, Python, atau Java di proyek nyata?",
+	},
+	{
+		"category": "Backend Framework",
+		"skill": "Express.js, Gin, Fiber, Flask",
+		"question": "Seberapa siap Anda membangun sistem backend menggunakan framework seperti Express.js, Gin, atau Flask?",
 	},
 	{
 		"category": "Database SQL",
-		"skill": "MySQL, PostgreSQL, BigQuery",
-		"question": "Seberapa nyaman Anda menulis query SQL untuk kebutuhan aplikasi atau analisis data?",
+		"skill": "MySQL, PostgreSQL, query optimization",
+		"question": "Seberapa kompeten Anda merancang skema relasional, menulis query kompleks, dan melakukan optimasi SQL?",
 	},
 	{
 		"category": "NoSQL/Vector DB",
-		"skill": "MongoDB, Firebase, Vector DB",
-		"question": "Seberapa sering Anda menggunakan NoSQL atau vector database sesuai kebutuhan arsitektur sistem?",
+		"skill": "MongoDB, Redis, Firebase, Vector DB",
+		"question": "Seberapa familiar Anda dengan database non-relasional seperti MongoDB, Redis, atau Vector DB?",
 	},
 	{
-		"category": "API & Integration",
-		"skill": "REST API, Postman, Microservices",
-		"question": "Seberapa kuat pengalaman Anda mengintegrasikan API dan melakukan debugging integrasi antar layanan?",
+		"category": "API Development",
+		"skill": "RESTful API, request/response, WebSocket",
+		"question": "Seberapa mahir Anda mendesain dan mengimplementasikan RESTful API atau teknologi real-time (WebSocket)?",
+	},
+	{
+		"category": "Authentication",
+		"skill": "JWT, OAuth, security best practice",
+		"question": "Seberapa dalam pengetahuan Anda tentang sistem autentikasi (JWT/OAuth) dan best practice keamanan aplikasi?",
 	},
 	{
 		"category": "Version Control",
-		"skill": "Git (Commit, Branch, Merge)",
-		"question": "Seberapa disiplin Anda menerapkan workflow Git, termasuk branching strategy dan conflict resolution?",
+		"skill": "Git (commit, branching, collaboration workflow)",
+		"question": "Seberapa disiplin Anda menerapkan branching strategy dan kolaborasi menggunakan Git?",
 	},
 	{
 		"category": "Cloud & DevOps",
-		"skill": "Docker, Kubernetes, CI/CD, AWS",
-		"question": "Seberapa siap Anda melakukan deployment dan automasi release menggunakan Docker, CI/CD, atau layanan cloud?",
+		"skill": "Docker, Kubernetes, CI/CD, cloud (AWS/GCP/Azure)",
+		"question": "Seberapa siap Anda menyusun pipeline CI/CD dan men-deploy aplikasi dengan Docker/Kubernetes di layanan cloud?",
+	},
+	{
+		"category": "System Integration",
+		"skill": "Microservices, message queue (Kafka, RabbitMQ), third-party integration",
+		"question": "Seberapa berpengalaman Anda mengintegrasikan berbagai layanan internal (Microservices/Message Queue) atau API pihak ketiga?",
+	},
+	{
+		"category": "Monitoring & Logging",
+		"skill": "Logging, debugging, observability (Grafana, ELK, Sentry)",
+		"question": "Seberapa proaktif Anda mengatur sistem logging, monitoring, dan debugging (seperti Grafana/Sentry) di tahap produksi?",
+	},
+	{
+		"category": "Performance",
+		"skill": "Optimasi sistem (scalability, speed, lazy loading, efficiency)",
+		"question": "Seberapa sering Anda melakukan optimasi performa, seperti scalability, lazy loading, dan efisiensi query/kode?",
 	},
 	{
 		"category": "AI & ML Core",
-		"skill": "Training Model, Evaluation, PyTorch/TensorFlow",
-		"question": "Seberapa jauh Anda pernah melatih, mengevaluasi, dan memperbaiki performa model machine learning?",
+		"skill": "Machine learning, model training, evaluation",
+		"question": "Seberapa jauh Anda pernah membangun, melatih, dan mengevaluasi model machine learning mandiri?",
 	},
 	{
 		"category": "Generative AI",
-		"skill": "LLM, RAG, AI Agent",
-		"question": "Seberapa siap Anda membangun solusi GenAI seperti RAG atau AI agent untuk kebutuhan produk?",
+		"skill": "LLM, RAG, prompt engineering, AI agent",
+		"question": "Seberapa mendalam pengalaman Anda dengan model AI generatif (LLM), RAG, atau prompt engineering?",
+	},
+	{
+		"category": "AI Framework",
+		"skill": "LangChain, LlamaIndex, AI orchestration",
+		"question": "Seberapa sering Anda memakai framework AI seperti LangChain atau LlamaIndex untuk orkestrasi AI?",
 	},
 	{
 		"category": "Data Processing",
-		"skill": "Pandas, NumPy, Data Cleaning",
-		"question": "Seberapa rutin Anda melakukan data cleaning, transformasi, dan eksplorasi data sebelum analisis lanjutan?",
+		"skill": "Pandas, NumPy, data cleaning",
+		"question": "Seberapa terampil Anda menggunakan library (seperti Pandas/NumPy) untuk memproses dan membersihkan data mentah?",
+	},
+	{
+		"category": "Data Analysis",
+		"skill": "Statistik, regression, clustering",
+		"question": "Seberapa paham Anda dalam menerapkan teknik analisis klasikal, seperti regresi dan clustering, untuk menemukan pola data?",
 	},
 	{
 		"category": "Data Visualization",
-		"skill": "Matplotlib, Seaborn, BI Tools",
-		"question": "Seberapa efektif Anda menyajikan insight lewat visualisasi data untuk stakeholder non-teknis?",
+		"skill": "Tableau, Power BI, Matplotlib",
+		"question": "Seberapa efektif Anda membuat dashboard atau visualisasi interaktif dari data menggunakan tool maupun kode?",
+	},
+	{
+		"category": "Feature Engineering",
+		"skill": "Data preparation dan feature extraction",
+		"question": "Seberapa matang keahlian Anda dalam merancang dan mengekstrak fitur dataset yang berpengaruh bagi pemodelan?",
 	},
 	{
 		"category": "Design Tools",
-		"skill": "Figma, UI/UX Design",
-		"question": "Seberapa baik Anda berkolaborasi menggunakan Figma dan menerapkan prinsip UI/UX dalam implementasi produk?",
+		"skill": "Figma, UI/UX design, design-to-code",
+		"question": "Seberapa baik Anda berkolaborasi menggunakan Figma, memahami UX, dan mengubah desain menjadi kode?",
 	},
 ]
 
 
 ROLE_CONFIG = {
 	"Backend Developer": {
-		"core": [1, 5, 6, 7, 8, 9, 10],
-		"bonus": [2, 3],
+		"core": [1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+		"bonus": [3, 4],
 	},
 	"Frontend Developer": {
-		"core": [1, 2, 3, 8, 9, 15],
-		"bonus": [4, 5, 6, 10],
+		"core": [1, 2, 3, 4, 10, 12, 14, 16, 24],
+		"bonus": [5, 6, 8, 11, 13, 15],
 	},
 	"Mobile Developer": {
-		"core": [1, 2, 3, 4, 5, 6, 7, 8, 9, 15],
-		"bonus": [10],
+		"core": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 24],
+		"bonus": [13, 15],
 	},
 	"AI Engineer": {
-		"core": [1, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+		"core": [1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
 		"bonus": [],
 	},
 	"Data Scientist": {
-		"core": [5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+		"core": [1, 6, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
 		"bonus": [],
 	},
 }
@@ -192,7 +237,15 @@ def _build_role_feedback(answers, cfg):
 		return ranked[:3], [], is_balanced
 
 	strengths = ranked[:3]
-	gaps = sorted(ranked, key=lambda x: x[1])[:2]
+	
+	# Mengambil semua skill dengan nilai di bawah 4 (belum mahir/mandiri) sebagai gap
+	all_gaps = sorted(ranked, key=lambda x: x[1])
+	gaps = [item for item in all_gaps if item[1] < 4.0]
+	
+	# Jika tidak ada yang di bawah 4, tetap ambil 2 terendah sebagai area pengembangan
+	if not gaps:
+		gaps = all_gaps[:2]
+
 	return strengths, gaps, is_balanced
 
 
