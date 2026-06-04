@@ -34,69 +34,81 @@
     .nav-done{font-size:0.73rem;font-weight:700;color:var(--green);display:flex;align-items:center;gap:0.4rem;background:var(--green-light);padding:0.35rem 0.875rem;border-radius:999px;border:1.5px solid var(--border-green)}
 
     /* ── PAGE WRAPPER ── */
-    main{max-width:1100px;margin:0 auto;padding:2.5rem 1.25rem 5rem}
+    main{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 5rem}
 
     /* ── PAGE HEADER ── */
-    .page-header{text-align:center;margin-bottom:2.25rem}
+    .page-header{text-align:center;margin-bottom:2rem}
     .header-badge{
       display:inline-flex;align-items:center;gap:0.4rem;
-      padding:0.35rem 1rem;border-radius:999px;margin-bottom:1rem;
+      padding:0.3rem 0.875rem;border-radius:999px;margin-bottom:0.875rem;
       background:var(--green-light);border:1.5px solid var(--border-green);
-      font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--green-2);
+      font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--green-2);
     }
-    .page-header h1{font-size:clamp(1.75rem,4vw,2.5rem);font-weight:700;letter-spacing:-0.02em;color:var(--slate-900)}
-    .page-header p{color:var(--muted);margin-top:0.5rem;font-size:0.88rem}
+    .page-header h1{font-size:clamp(1.5rem,3.5vw,2.25rem);font-weight:700;letter-spacing:-0.02em;color:var(--slate-900)}
+    .page-header p{color:var(--muted);margin-top:0.4rem;font-size:0.85rem}
 
     /* ── MAIN 2-COLUMN LAYOUT ── */
     .main-columns{
       display:grid;
-      grid-template-columns:1fr 380px;
-      gap:1.5rem;
+      grid-template-columns:1fr 360px;
+      gap:1.25rem;
       align-items:start;
-      margin-bottom:2rem;
+      margin-bottom:1.75rem;
     }
     @media(max-width:860px){.main-columns{grid-template-columns:1fr}}
 
     /* ── HERO CARD (left) ── */
     .hero-card{
-      border-radius:1.5rem;overflow:hidden;
+      border-radius:1.25rem;overflow:hidden;
       border:1.5px solid var(--border-green);
-      box-shadow:0 6px 32px rgba(22,163,74,0.1),0 2px 6px rgba(0,0,0,0.05);
+      box-shadow:0 4px 24px rgba(22,163,74,0.09),0 1px 4px rgba(0,0,0,0.04);
       background:var(--white);
     }
     .hero-card-head{
       background:linear-gradient(135deg,var(--green-2) 0%,var(--green) 55%,var(--teal) 100%);
-      padding:2rem 1.75rem;text-align:center;position:relative;overflow:hidden;
+      padding:1.75rem 1.5rem;text-align:center;position:relative;overflow:hidden;
     }
     .hero-card-head::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 110%,rgba(0,0,0,0.12),transparent)}
-    .hero-rank{font-size:0.62rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);margin-bottom:0.65rem;position:relative}
-    .hero-role{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:700;color:#fff;margin-bottom:1rem;position:relative;line-height:1.2}
-    .hero-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:0.5rem;position:relative}
-    .badge-label{padding:0.35rem 0.9rem;border-radius:999px;background:rgba(255,255,255,0.18);backdrop-filter:blur(6px);font-size:0.78rem;font-weight:600;color:#fff}
-    .badge-score{padding:0.35rem 1rem;border-radius:999px;background:#fff;color:var(--green-2);font-family:'Space Grotesk',sans-serif;font-size:0.88rem;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,0.1)}
-    .badge-nlp{padding:0.3rem 0.75rem;border-radius:999px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);font-size:0.68rem;font-weight:700;color:rgba(255,255,255,0.9)}
-    .badge-breakdown{font-size:0.65rem;color:rgba(255,255,255,0.65);font-weight:500;margin-top:0.4rem}
+    .hero-rank{font-size:0.6rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:0.5rem;position:relative}
+    .hero-role{font-size:clamp(1.35rem,2.5vw,2rem);font-weight:700;color:#fff;margin-bottom:0.875rem;position:relative;line-height:1.2}
+    .hero-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:0.45rem;position:relative}
+    .badge-label{padding:0.3rem 0.8rem;border-radius:999px;background:rgba(255,255,255,0.18);backdrop-filter:blur(6px);font-size:0.75rem;font-weight:600;color:#fff}
+    .badge-score{padding:0.3rem 0.9rem;border-radius:999px;background:#fff;color:var(--green-2);font-family:'Space Grotesk',sans-serif;font-size:0.85rem;font-weight:700;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
+    .badge-nlp{padding:0.25rem 0.7rem;border-radius:999px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.28);font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.9)}
+    .badge-breakdown{font-size:0.63rem;color:rgba(255,255,255,0.6);font-weight:500;margin-top:0.35rem}
 
     /* HERO BODY */
-    .hero-card-body{padding:1.5rem}
-    .insight-block{margin-bottom:1.25rem}
+    .hero-card-body{padding:1.25rem 1.5rem 1.5rem}
+    .insight-block{margin-bottom:1.125rem}
     .insight-block:last-child{margin-bottom:0}
     .insight-title{
-      font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;
-      margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem;color:var(--muted);
+      font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.09em;
+      margin-bottom:0.625rem;display:flex;align-items:center;gap:0.45rem;color:var(--muted);
     }
-    .icon-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+    .icon-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
     .dot-green{background:var(--green)}
     .dot-amber{background:var(--amber)}
     .dot-blue{background:var(--blue)}
 
-    .skill-list{display:flex;flex-direction:column;gap:0.4rem}
+    /* Skill item: 3 elemen */
+    .skill-list{display:flex;flex-direction:column;gap:0.5rem}
     .skill-item{
-      padding:0.5rem 0.875rem;border-radius:0.625rem;
+      padding:0.75rem 1rem;border-radius:0.75rem;
       background:var(--slate-50);border:1px solid var(--border);
-      font-size:0.8rem;color:var(--muted);line-height:1.4;
     }
-    .skill-item strong{color:var(--slate-700);font-weight:600}
+    .skill-item-top{
+      display:flex;align-items:center;justify-content:space-between;gap:0.5rem;
+      margin-bottom:0.25rem;
+    }
+    .skill-name{font-size:0.875rem;font-weight:600;color:var(--slate-800);line-height:1.3}
+    .skill-score{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:0.78rem;font-weight:700;color:var(--green-2);
+      white-space:nowrap;flex-shrink:0;
+      background:var(--green-light);padding:0.2rem 0.6rem;border-radius:999px;
+    }
+    .skill-desc{font-size:0.8rem;color:var(--muted);line-height:1.45}
 
     .divider{height:1px;background:var(--border);margin:1.25rem 0}
 
@@ -104,14 +116,14 @@
     .reco-item{
       padding:0.6rem 0.875rem;border-radius:0.625rem;
       background:var(--blue-light);border:1px solid rgba(37,99,235,0.1);
-      font-size:0.78rem;color:var(--slate-600);line-height:1.4;
+      font-size:0.8rem;color:var(--slate-700);line-height:1.45;
     }
 
     /* ── NLP PANEL (right) ── */
     .nlp-panel{
       background:var(--white);border:1.5px solid var(--border);
-      border-radius:1.5rem;padding:1.5rem;
-      box-shadow:0 2px 14px rgba(0,0,0,0.05);
+      border-radius:1.25rem;padding:1.5rem;
+      box-shadow:0 2px 12px rgba(0,0,0,0.04);
       position:sticky;top:5rem;
     }
     .nlp-panel-head{display:flex;align-items:center;gap:0.65rem;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
@@ -150,17 +162,19 @@
     .nlp-note{font-size:0.65rem;color:var(--muted);text-align:center;padding-top:0.875rem;border-top:1px solid var(--border)}
 
     /* ── OTHER ROLES ── */
-    .others-section{margin-bottom:2rem}
-    .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
-    .section-head h2{font-size:1rem;font-weight:700;color:var(--slate-900)}
+    .others-section{margin-top:2.5rem;margin-bottom:2.5rem}
     .btn-toggle{
-      display:inline-flex;align-items:center;gap:0.4rem;
-      padding:0.5rem 1.1rem;border-radius:999px;
-      border:1.5px solid var(--border);background:var(--white);
-      color:var(--muted);font-size:0.78rem;font-weight:600;
+      display:inline-flex;align-items:center;gap:0.5rem;
+      padding:0.75rem 1.75rem;border-radius:999px;
+      border:1.5px solid var(--border-green);background:var(--white);
+      color:var(--green);font-size:0.875rem;font-weight:700;
       cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;
     }
-    .btn-toggle:hover{border-color:var(--border-green);color:var(--green)}
+    .btn-toggle:hover{
+      transform:translateY(-1px);
+      box-shadow:0 4px 12px rgba(22,163,74,0.1);
+      border-color:var(--green);
+    }
     .toggle-icon{transition:transform 0.3s;flex-shrink:0}
     .toggle-icon.open{transform:rotate(180deg)}
 
@@ -177,14 +191,14 @@
     }
     .other-card:hover{border-color:var(--border-green);transform:translateY(-2px);box-shadow:0 6px 20px rgba(22,163,74,0.1)}
     .other-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:0.75rem;margin-bottom:0.75rem}
-    .other-left h3{font-size:0.95rem;font-weight:700;color:var(--slate-900);margin-bottom:0.15rem}
-    .other-left p{font-size:0.75rem;color:var(--muted)}
+    .other-left h3{font-size:1rem;font-weight:700;color:var(--slate-900);margin-bottom:0.15rem}
+    .other-left p{font-size:0.8rem;color:var(--muted)}
     .other-right{text-align:right;flex-shrink:0}
-    .other-score{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;color:var(--green)}
+    .other-score{font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:700;color:var(--green)}
     .other-bonus{font-size:0.65rem;color:var(--emerald);font-weight:700;margin-top:0.1rem}
     .other-fuzzy{font-size:0.6rem;color:var(--muted)}
     .other-insight{
-      font-size:0.77rem;color:var(--muted);
+      font-size:0.78rem;color:var(--muted);
       padding-top:0.75rem;border-top:1px solid var(--border);
       display:flex;align-items:flex-start;gap:0.4rem;
     }
@@ -264,10 +278,41 @@
           </div>
           <div class="skill-list">
             {% if top.is_balanced %}
-            <div class="skill-item">Kekuatan merata di semua area skill yang relevan untuk role ini.</div>
+            <div class="skill-item">
+              <div class="skill-item-top">
+                <span class="skill-name">Kekuatan Merata</span>
+              </div>
+              <div class="skill-desc">Kekuatan merata di semua area skill yang relevan untuk role ini.</div>
+            </div>
             {% else %}
               {% for line in top.strength_lines %}
-              <div class="skill-item"><strong>{{ line.split(': ')[0] }}</strong> — {{ line.split(': ')[1] }}</div>
+                {% set parts_score = line.split(': ') %}
+                {% if parts_score|length >= 2 %}
+                  {% set score_val = parts_score[1] %}
+                  {% set parts_text = parts_score[0].split(' - ') %}
+                  {% if parts_text|length >= 2 %}
+                    {% set cat_val = parts_text[0] %}
+                    {% set skill_val = parts_text[1] %}
+                  {% else %}
+                    {% set cat_val = parts_score[0] %}
+                    {% set skill_val = "" %}
+                  {% endif %}
+                {% else %}
+                  {% set cat_val = line %}
+                  {% set skill_val = "" %}
+                  {% set score_val = "" %}
+                {% endif %}
+                <div class="skill-item">
+                  <div class="skill-item-top">
+                    <span class="skill-name">{{ cat_val }}</span>
+                    {% if score_val %}
+                    <span class="skill-score">{{ score_val }}</span>
+                    {% endif %}
+                  </div>
+                  {% if skill_val %}
+                  <div class="skill-desc">{{ skill_val }}</div>
+                  {% endif %}
+                </div>
               {% endfor %}
             {% endif %}
           </div>
@@ -281,10 +326,41 @@
           <div class="skill-list">
             {% if top.gap_lines %}
               {% for line in top.gap_lines %}
-              <div class="skill-item"><strong>{{ line.split(': ')[0] }}</strong> — {{ line.split(': ')[1] }}</div>
+                {% set parts_score = line.split(': ') %}
+                {% if parts_score|length >= 2 %}
+                  {% set score_val = parts_score[1] %}
+                  {% set parts_text = parts_score[0].split(' - ') %}
+                  {% if parts_text|length >= 2 %}
+                    {% set cat_val = parts_text[0] %}
+                    {% set skill_val = parts_text[1] %}
+                  {% else %}
+                    {% set cat_val = parts_score[0] %}
+                    {% set skill_val = "" %}
+                  {% endif %}
+                {% else %}
+                  {% set cat_val = line %}
+                  {% set skill_val = "" %}
+                  {% set score_val = "" %}
+                {% endif %}
+                <div class="skill-item">
+                  <div class="skill-item-top">
+                    <span class="skill-name">{{ cat_val }}</span>
+                    {% if score_val %}
+                    <span class="skill-score" style="background: var(--amber-light); color: var(--amber);">{{ score_val }}</span>
+                    {% endif %}
+                  </div>
+                  {% if skill_val %}
+                  <div class="skill-desc">{{ skill_val }}</div>
+                  {% endif %}
+                </div>
               {% endfor %}
             {% else %}
-            <div class="skill-item">Tidak ada gap signifikan untuk role ini.</div>
+            <div class="skill-item">
+              <div class="skill-item-top">
+                <span class="skill-name">Profil Optimal</span>
+              </div>
+              <div class="skill-desc">Tidak ada gap signifikan untuk role ini.</div>
+            </div>
             {% endif %}
           </div>
         </div>
@@ -359,12 +435,11 @@
   </div><!-- end .main-columns -->
 
   <!-- OTHER ROLES -->
-  <div class="others-section">
-    <div class="section-head">
-      <h2>Peran IT Lainnya</h2>
-      <button class="btn-toggle" id="toggleBtn">
-        <span id="toggleText">Tampilkan</span>
-        <i data-lucide="chevron-down" class="toggle-icon" id="toggleIcon" style="width:14px;height:14px"></i>
+  <div class="others-section" style="margin-top: 2rem;">
+    <div style="text-align: center; margin-bottom: 1.5rem;">
+      <button class="btn-toggle" id="toggleBtn" style="padding: 0.65rem 1.75rem; font-size: 0.85rem; font-weight: 700; border-radius: 999px; display: inline-flex; align-items: center; gap: 0.5rem; border: 1.5px solid var(--border-green); background: var(--white); color: var(--green); cursor: pointer; transition: all 0.2s;">
+        <span id="toggleText">Lihat Kecocokan Karier IT Lainnya</span>
+        <i data-lucide="chevron-down" class="toggle-icon" id="toggleIcon" style="width:16px;height:16px;transition: transform 0.3s;"></i>
       </button>
     </div>
 
@@ -385,10 +460,17 @@
           </div>
         </div>
         {% if item.gap_lines %}
-        <div class="other-insight">
-          <i data-lucide="lightbulb" style="width:13px;height:13px;color:var(--amber);flex-shrink:0;margin-top:1px"></i>
-          Tingkatkan: <strong style="color:var(--slate-700);margin-left:3px">{{ item.gap_lines[0].split(': ')[0] }}</strong>
-        </div>
+          {% set other_gap_parts = item.gap_lines[0].split(': ')[0].split(' - ') %}
+          <div class="other-insight">
+            <i data-lucide="lightbulb" style="width:13px;height:13px;color:var(--amber);flex-shrink:0;margin-top:1px"></i>
+            Tingkatkan: <strong style="color:var(--slate-700);margin-left:3px">
+              {% if other_gap_parts|length >= 2 %}
+                {{ other_gap_parts[0] }} ({{ other_gap_parts[1] }})
+              {% else %}
+                {{ other_gap_parts[0] }}
+              {% endif %}
+            </strong>
+          </div>
         {% endif %}
       </div>
       {% endfor %}
@@ -396,7 +478,7 @@
   </div>
 
   <!-- ACTION BAR -->
-  <div class="action-bar">
+  <div class="action-bar" style="margin-top: 2.5rem;">
     <a href="/quiz/1" class="btn-secondary">
       <i data-lucide="pencil" style="width:14px;height:14px"></i>
       Ubah Jawaban
@@ -420,7 +502,7 @@
   btn.addEventListener('click', () => {
     const open = list.style.display !== 'none';
     list.style.display = open ? 'none' : 'grid';
-    txt.textContent = open ? 'Tampilkan' : 'Sembunyikan';
+    txt.textContent = open ? 'Lihat Kecocokan Karier IT Lainnya' : 'Sembunyikan Kecocokan Karier IT Lainnya';
     icon.classList.toggle('open', !open);
   });
 </script>
