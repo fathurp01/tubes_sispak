@@ -3,246 +3,426 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ app_name }} | Hasil</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <title>{{ app_name }} | Hasil Rekomendasimu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
-    body {
-      font-family: "Plus Jakarta Sans", sans-serif;
-      background: linear-gradient(135deg, #f8f5f0 0%, #f0f8f5 100%);
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --green:#16a34a;--green-2:#15803d;--green-light:#dcfce7;--green-xlight:#f0fdf4;
+      --teal:#0d9488;--teal-light:#ccfbf1;--emerald:#059669;
+      --amber:#d97706;--amber-light:#fffbeb;
+      --rose:#e11d48;--rose-light:#fff1f2;--rose-mid:#fecdd3;
+      --blue:#2563eb;--blue-light:#eff6ff;
+      --white:#fff;--slate-50:#f8fafc;
+      --slate-500:#64748b;--slate-600:#475569;--slate-700:#334155;--slate-800:#1e293b;--slate-900:#0f172a;
+      --muted:#64748b;--border:#e2e8f0;--border-green:rgba(22,163,74,0.2);
     }
+    body{font-family:'Inter',sans-serif;background:var(--green-xlight);color:var(--slate-800);min-height:100vh}
+    h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif}
+
+    /* ── NAV ── */
+    .top-bar{
+      padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;
+      background:rgba(240,253,244,0.92);backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border-green);position:sticky;top:0;z-index:50;
+    }
+    .top-logo{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;color:var(--green);text-decoration:none;display:flex;align-items:center;gap:0.35rem}
+    .top-logo .logo-dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--teal));display:inline-block}
+    .nav-done{font-size:0.73rem;font-weight:700;color:var(--green);display:flex;align-items:center;gap:0.4rem;background:var(--green-light);padding:0.35rem 0.875rem;border-radius:999px;border:1.5px solid var(--border-green)}
+
+    /* ── PAGE WRAPPER ── */
+    main{max-width:1100px;margin:0 auto;padding:2.5rem 1.25rem 5rem}
+
+    /* ── PAGE HEADER ── */
+    .page-header{text-align:center;margin-bottom:2.25rem}
+    .header-badge{
+      display:inline-flex;align-items:center;gap:0.4rem;
+      padding:0.35rem 1rem;border-radius:999px;margin-bottom:1rem;
+      background:var(--green-light);border:1.5px solid var(--border-green);
+      font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--green-2);
+    }
+    .page-header h1{font-size:clamp(1.75rem,4vw,2.5rem);font-weight:700;letter-spacing:-0.02em;color:var(--slate-900)}
+    .page-header p{color:var(--muted);margin-top:0.5rem;font-size:0.88rem}
+
+    /* ── MAIN 2-COLUMN LAYOUT ── */
+    .main-columns{
+      display:grid;
+      grid-template-columns:1fr 380px;
+      gap:1.5rem;
+      align-items:start;
+      margin-bottom:2rem;
+    }
+    @media(max-width:860px){.main-columns{grid-template-columns:1fr}}
+
+    /* ── HERO CARD (left) ── */
+    .hero-card{
+      border-radius:1.5rem;overflow:hidden;
+      border:1.5px solid var(--border-green);
+      box-shadow:0 6px 32px rgba(22,163,74,0.1),0 2px 6px rgba(0,0,0,0.05);
+      background:var(--white);
+    }
+    .hero-card-head{
+      background:linear-gradient(135deg,var(--green-2) 0%,var(--green) 55%,var(--teal) 100%);
+      padding:2rem 1.75rem;text-align:center;position:relative;overflow:hidden;
+    }
+    .hero-card-head::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 110%,rgba(0,0,0,0.12),transparent)}
+    .hero-rank{font-size:0.62rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);margin-bottom:0.65rem;position:relative}
+    .hero-role{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:700;color:#fff;margin-bottom:1rem;position:relative;line-height:1.2}
+    .hero-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:0.5rem;position:relative}
+    .badge-label{padding:0.35rem 0.9rem;border-radius:999px;background:rgba(255,255,255,0.18);backdrop-filter:blur(6px);font-size:0.78rem;font-weight:600;color:#fff}
+    .badge-score{padding:0.35rem 1rem;border-radius:999px;background:#fff;color:var(--green-2);font-family:'Space Grotesk',sans-serif;font-size:0.88rem;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,0.1)}
+    .badge-nlp{padding:0.3rem 0.75rem;border-radius:999px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);font-size:0.68rem;font-weight:700;color:rgba(255,255,255,0.9)}
+    .badge-breakdown{font-size:0.65rem;color:rgba(255,255,255,0.65);font-weight:500;margin-top:0.4rem}
+
+    /* HERO BODY */
+    .hero-card-body{padding:1.5rem}
+    .insight-block{margin-bottom:1.25rem}
+    .insight-block:last-child{margin-bottom:0}
+    .insight-title{
+      font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;
+      margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem;color:var(--muted);
+    }
+    .icon-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+    .dot-green{background:var(--green)}
+    .dot-amber{background:var(--amber)}
+    .dot-blue{background:var(--blue)}
+
+    .skill-list{display:flex;flex-direction:column;gap:0.4rem}
+    .skill-item{
+      padding:0.5rem 0.875rem;border-radius:0.625rem;
+      background:var(--slate-50);border:1px solid var(--border);
+      font-size:0.8rem;color:var(--muted);line-height:1.4;
+    }
+    .skill-item strong{color:var(--slate-700);font-weight:600}
+
+    .divider{height:1px;background:var(--border);margin:1.25rem 0}
+
+    .reco-grid{display:flex;flex-direction:column;gap:0.4rem}
+    .reco-item{
+      padding:0.6rem 0.875rem;border-radius:0.625rem;
+      background:var(--blue-light);border:1px solid rgba(37,99,235,0.1);
+      font-size:0.78rem;color:var(--slate-600);line-height:1.4;
+    }
+
+    /* ── NLP PANEL (right) ── */
+    .nlp-panel{
+      background:var(--white);border:1.5px solid var(--border);
+      border-radius:1.5rem;padding:1.5rem;
+      box-shadow:0 2px 14px rgba(0,0,0,0.05);
+      position:sticky;top:5rem;
+    }
+    .nlp-panel-head{display:flex;align-items:center;gap:0.65rem;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+    .nlp-icon-wrap{
+      width:38px;height:38px;border-radius:10px;background:var(--green-light);
+      display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    }
+    .nlp-icon-wrap i{color:var(--green);width:18px;height:18px}
+    .nlp-panel-head h2{font-size:0.95rem;font-weight:700;color:var(--slate-900)}
+    .nlp-panel-head p{font-size:0.73rem;color:var(--muted);margin-top:0.1rem}
+
+    .nlp-empty{
+      text-align:center;padding:2rem 1rem;
+      font-size:0.82rem;color:var(--muted);line-height:1.6;
+    }
+    .nlp-empty i{color:var(--border);width:36px;height:36px;display:block;margin:0 auto 0.75rem}
+
+    .curhat-quote{
+      background:var(--slate-50);border:1px solid var(--border);
+      border-radius:0.875rem;padding:0.875rem 1rem;margin-bottom:1rem;
+    }
+    .quote-label{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.3rem}
+    .quote-text{font-size:0.82rem;color:var(--slate-600);line-height:1.6;font-style:italic;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+
+    .skills-group{margin-bottom:1rem}
+    .skills-group-title{
+      font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;
+      margin-bottom:0.6rem;display:flex;align-items:center;gap:0.4rem;
+    }
+    .title-green{color:var(--green-2)}
+    .title-rose{color:var(--rose)}
+    .skill-tags{display:flex;flex-wrap:wrap;gap:0.35rem}
+    .tag-green{padding:0.25rem 0.6rem;border-radius:999px;background:var(--green-light);border:1px solid var(--border-green);font-size:0.68rem;font-weight:600;color:var(--green-2)}
+    .tag-rose{padding:0.25rem 0.6rem;border-radius:999px;background:var(--rose-light);border:1px solid rgba(225,29,72,0.15);font-size:0.68rem;font-weight:600;color:var(--rose)}
+    .no-skill{font-size:0.78rem;color:var(--muted);font-style:italic}
+    .nlp-note{font-size:0.65rem;color:var(--muted);text-align:center;padding-top:0.875rem;border-top:1px solid var(--border)}
+
+    /* ── OTHER ROLES ── */
+    .others-section{margin-bottom:2rem}
+    .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+    .section-head h2{font-size:1rem;font-weight:700;color:var(--slate-900)}
+    .btn-toggle{
+      display:inline-flex;align-items:center;gap:0.4rem;
+      padding:0.5rem 1.1rem;border-radius:999px;
+      border:1.5px solid var(--border);background:var(--white);
+      color:var(--muted);font-size:0.78rem;font-weight:600;
+      cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;
+    }
+    .btn-toggle:hover{border-color:var(--border-green);color:var(--green)}
+    .toggle-icon{transition:transform 0.3s;flex-shrink:0}
+    .toggle-icon.open{transform:rotate(180deg)}
+
+    .others-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:0.875rem;
+    }
+    @media(max-width:640px){.others-grid{grid-template-columns:1fr}}
+
+    .other-card{
+      background:var(--white);border:1.5px solid var(--border);border-radius:1.25rem;
+      padding:1.25rem;transition:all 0.2s;box-shadow:0 1px 6px rgba(0,0,0,0.04);
+    }
+    .other-card:hover{border-color:var(--border-green);transform:translateY(-2px);box-shadow:0 6px 20px rgba(22,163,74,0.1)}
+    .other-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:0.75rem;margin-bottom:0.75rem}
+    .other-left h3{font-size:0.95rem;font-weight:700;color:var(--slate-900);margin-bottom:0.15rem}
+    .other-left p{font-size:0.75rem;color:var(--muted)}
+    .other-right{text-align:right;flex-shrink:0}
+    .other-score{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;color:var(--green)}
+    .other-bonus{font-size:0.65rem;color:var(--emerald);font-weight:700;margin-top:0.1rem}
+    .other-fuzzy{font-size:0.6rem;color:var(--muted)}
+    .other-insight{
+      font-size:0.77rem;color:var(--muted);
+      padding-top:0.75rem;border-top:1px solid var(--border);
+      display:flex;align-items:flex-start;gap:0.4rem;
+    }
+    .other-insight i{width:13px;height:13px;flex-shrink:0;margin-top:1px;color:var(--muted)}
+
+    /* ── ACTION BAR ── */
+    .action-bar{
+      display:flex;align-items:center;justify-content:center;gap:0.875rem;
+      padding-top:2rem;border-top:1px solid var(--border);flex-wrap:wrap;
+    }
+    .btn-secondary{
+      display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.4rem;border-radius:999px;
+      border:1.5px solid var(--border);background:var(--white);color:var(--muted);
+      font-size:0.85rem;font-weight:600;cursor:pointer;text-decoration:none;font-family:'Inter',sans-serif;
+      transition:all 0.2s;
+    }
+    .btn-secondary:hover{border-color:var(--border-green);color:var(--green)}
+    .btn-secondary i{width:15px;height:15px}
+    .btn-restart{
+      display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.4rem;border-radius:999px;
+      background:linear-gradient(135deg,var(--green),var(--emerald));color:#fff;
+      font-family:'Space Grotesk',sans-serif;font-size:0.875rem;font-weight:700;border:none;cursor:pointer;
+      box-shadow:0 4px 16px rgba(22,163,74,0.28);transition:all 0.2s;
+    }
+    .btn-restart:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(22,163,74,0.38)}
+    .btn-restart i{width:15px;height:15px}
   </style>
 </head>
-<body class="min-h-screen text-slate-900 pb-20">
-  <main class="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
-    <div class="text-center mb-10">
-      <div class="inline-block rounded-full bg-teal-100/80 px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider text-teal-800 shadow-sm mb-4">
-        Analisis Selesai
-      </div>
-      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900">
-        Rekomendasi Karier Anda
-      </h1>
-    </div>
+<body>
 
-    <!-- MAIN ROLE RECOMMENDATION -->
-    {% set top = ranking[0] %}
-    <section class="rounded-[2.5rem] bg-white shadow-2xl overflow-hidden mb-10 border border-slate-100">
-      <div class="bg-gradient-to-r from-teal-500 to-emerald-500 px-6 py-10 text-center text-white sm:px-10">
-        <p class="text-sm font-bold uppercase tracking-widest text-teal-100 mb-2">Kecocokan Tertinggi</p>
-        <h2 class="text-4xl sm:text-5xl font-extrabold mb-6">{{ top.role }}</h2>
-        <div class="flex flex-wrap justify-center gap-3 text-sm sm:text-base items-center">
-          <span class="rounded-full bg-white/20 px-5 py-2 font-bold backdrop-blur-md">{{ top.label }}</span>
-          <span class="rounded-full bg-white text-teal-600 px-5 py-2 font-black shadow-lg">{{ '%.0f'|format(top.score) }}% Match</span>
+<div class="top-bar">
+  <a href="/" class="top-logo"><span class="logo-dot"></span>konsul.in</a>
+  <div class="nav-done">
+    <i data-lucide="check-circle-2" style="width:13px;height:13px"></i>
+    Analisis Selesai
+  </div>
+</div>
+
+<main>
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="header-badge">
+      <i data-lucide="target" style="width:11px;height:11px"></i>
+      Hasil Rekomendasimu
+    </div>
+    <h1>Rekomendasi Karier IT Kamu</h1>
+    <p>Berdasarkan {{ ranking|length }} peran IT yang dianalisis menggunakan Fuzzy Logic & NLP Lokal</p>
+  </div>
+
+  {% set top = ranking[0] %}
+
+  <!-- 2-COLUMN LAYOUT: Hero Card (left) + NLP Panel (right) -->
+  <div class="main-columns">
+
+    <!-- LEFT: TOP ROLE CARD -->
+    <div class="hero-card">
+      <div class="hero-card-head">
+        <div class="hero-rank">✦ Kecocokan Tertinggi</div>
+        <div class="hero-role">{{ top.role }}</div>
+        <div class="hero-badges">
+          <span class="badge-label">{{ top.label }}</span>
+          <span class="badge-score">{{ '%.0f'|format(top.score) }}% Cocok</span>
           {% if top.nlp_bonus and top.nlp_bonus > 0 %}
-          <span class="rounded-full bg-white/35 text-white px-4 py-2 font-extrabold text-xs shadow-inner">
-            +{{ '%.1f'|format(top.nlp_bonus) }}% NLP Bonus
-          </span>
-          <span class="text-xs font-semibold text-teal-100/90 ml-1">
-            (Fuzzy: {{ '%.0f'|format(top.original_score) }}% + NLP: {{ '%.1f'|format(top.nlp_bonus) }}%)
-          </span>
+          <span class="badge-nlp">+{{ '%.1f'|format(top.nlp_bonus) }}% Bonus Teks</span>
           {% endif %}
         </div>
+        {% if top.nlp_bonus and top.nlp_bonus > 0 %}
+        <div class="badge-breakdown">Fuzzy: {{ '%.0f'|format(top.original_score) }}% + NLP: {{ '%.1f'|format(top.nlp_bonus) }}%</div>
+        {% endif %}
       </div>
 
-      <div class="p-6 sm:p-10 space-y-8">
-        <div class="grid gap-8 sm:grid-cols-2">
-          <!-- Strengths -->
-          <div>
-            <div class="flex items-center gap-2 mb-4">
-              <div class="flex h-8 w-8 items-center justify-center rounded-full bg-teal-100 text-teal-600">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-              </div>
-              <h3 class="text-lg font-bold text-slate-800">Kekuatan Utama</h3>
-            </div>
-            <ul class="space-y-3">
-              {% if top.is_balanced %}
-              <li class="rounded-2xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">Kekuatan merata di seluruh skill yang relevan untuk role ini.</li>
-              {% else %}
-                {% for line in top.strength_lines %}
-                <li class="rounded-2xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 leading-relaxed">{{ line.split(': ')[0] }} <span class="text-teal-600 font-bold ml-1">{{ line.split(': ')[1] }}</span></li>
-                {% endfor %}
-              {% endif %}
-            </ul>
+      <div class="hero-card-body">
+        <!-- Strengths -->
+        <div class="insight-block">
+          <div class="insight-title">
+            <span class="icon-dot dot-green"></span>Kekuatan Utama
           </div>
-
-          <!-- Gaps -->
-          <div>
-            <div class="flex items-center gap-2 mb-4">
-              <div class="flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 text-amber-600">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
-              </div>
-              <h3 class="text-lg font-bold text-slate-800">Area Pengembangan</h3>
-            </div>
-            <ul class="space-y-3">
-              {% if top.gap_lines %}
-                {% for line in top.gap_lines %}
-                <li class="rounded-2xl bg-amber-50/50 px-4 py-3 text-sm font-semibold text-slate-700 leading-relaxed">{{ line.split(': ')[0] }} <span class="text-amber-600 font-bold ml-1">{{ line.split(': ')[1] }}</span></li>
-                {% endfor %}
-              {% else %}
-              <li class="rounded-2xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">Tidak ada gap signifikan untuk role ini.</li>
-              {% endif %}
-            </ul>
+          <div class="skill-list">
+            {% if top.is_balanced %}
+            <div class="skill-item">Kekuatan merata di semua area skill yang relevan untuk role ini.</div>
+            {% else %}
+              {% for line in top.strength_lines %}
+              <div class="skill-item"><strong>{{ line.split(': ')[0] }}</strong> — {{ line.split(': ')[1] }}</div>
+              {% endfor %}
+            {% endif %}
           </div>
         </div>
+
+        <!-- Gaps -->
+        <div class="insight-block">
+          <div class="insight-title">
+            <span class="icon-dot dot-amber"></span>Area Pengembangan
+          </div>
+          <div class="skill-list">
+            {% if top.gap_lines %}
+              {% for line in top.gap_lines %}
+              <div class="skill-item"><strong>{{ line.split(': ')[0] }}</strong> — {{ line.split(': ')[1] }}</div>
+              {% endfor %}
+            {% else %}
+            <div class="skill-item">Tidak ada gap signifikan untuk role ini.</div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="divider"></div>
 
         <!-- Recommendations -->
-        <div class="pt-6 border-t border-slate-100">
-          <div class="flex items-center gap-2 mb-4">
-            <div class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.34.208-.646.477-.859a4 4 0 10-4.954 0c.27.213.462.519.476.859h4.002z" /></svg>
-            </div>
-            <h3 class="text-lg font-bold text-slate-800">Langkah Selanjutnya</h3>
+        <div class="insight-block">
+          <div class="insight-title">
+            <span class="icon-dot dot-blue"></span>Langkah Berikutnya
           </div>
-          <ul class="grid gap-3 sm:grid-cols-2">
+          <div class="reco-grid">
             {% for reco in top.recommendations %}
-            <li class="rounded-2xl bg-white border border-slate-200 px-5 py-4 text-sm font-medium text-slate-600 shadow-sm">{{ reco }}</li>
+            <div class="reco-item">{{ reco }}</div>
             {% endfor %}
-          </ul>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- NLP CURHAT ANALYSIS -->
-    {% if curhat_text %}
-    <section class="rounded-[2.5rem] bg-white shadow-2xl p-6 sm:p-10 border border-slate-100 mb-10">
-      <div class="flex items-center gap-3 mb-6">
-        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-teal-100 text-teal-600">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-          </svg>
+    <!-- RIGHT: NLP CURHAT PANEL -->
+    <div class="nlp-panel">
+      <div class="nlp-panel-head">
+        <div class="nlp-icon-wrap">
+          <i data-lucide="message-circle" style="width:18px;height:18px;color:var(--green)"></i>
         </div>
-        <h2 class="text-2xl font-extrabold text-slate-900">Analisis Curhat Karier Anda</h2>
+        <div>
+          <h2>Analisis Cerita Kamu</h2>
+          <p>NLP Lokal Bahasa Indonesia</p>
+        </div>
       </div>
 
-      <div class="mb-6 rounded-3xl bg-slate-50 p-5 border border-slate-200 text-left">
-        <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Cerita Anda:</p>
-        <p class="italic text-slate-700 leading-relaxed">"{{ curhat_text }}"</p>
-      </div>
+      {% if curhat_text %}
+        <div class="curhat-quote">
+          <div class="quote-label">Ceritamu</div>
+          <div class="quote-text">"{{ curhat_text }}"</div>
+        </div>
 
-      <div class="grid gap-6 sm:grid-cols-2 text-left">
-        <!-- Strong Skills -->
-        <div class="rounded-3xl bg-teal-50/50 p-6 border border-teal-100">
-          <h3 class="text-lg font-bold text-teal-900 mb-4 flex items-center gap-2">
-            <span class="inline-block w-2.5 h-2.5 rounded-full bg-teal-500"></span>
-            Skill Terdeteksi dari Deskripsi Anda
-          </h3>
+        <div class="skills-group">
+          <div class="skills-group-title title-green">
+            <i data-lucide="badge-check" style="width:12px;height:12px;color:var(--green)"></i>
+            Skill Terdeteksi
+          </div>
           {% if detected_strong %}
-            <div class="flex flex-wrap gap-2">
-              {% for skill in detected_strong %}
-                <span class="inline-flex items-center rounded-full bg-teal-100 px-3.5 py-1.5 text-xs font-bold text-teal-800 shadow-sm border border-teal-200">
-                  {{ skill }}
-                </span>
-              {% endfor %}
-            </div>
-          {% else %}
-            <p class="text-sm font-semibold text-slate-500">Tidak ada skill kuat spesifik yang terdeteksi dalam kalimat.</p>
-          {% endif %}
+          <div class="skill-tags">{% for skill in detected_strong %}<span class="tag-green">{{ skill }}</span>{% endfor %}</div>
+          {% else %}<div class="no-skill">Tidak ada skill kuat yang terdeteksi.</div>{% endif %}
         </div>
 
-        <!-- Weak Skills -->
-        <div class="rounded-3xl bg-rose-50/30 p-6 border border-rose-100">
-          <h3 class="text-lg font-bold text-rose-900 mb-4 flex items-center gap-2">
-            <span class="inline-block w-2.5 h-2.5 rounded-full bg-rose-400"></span>
-            Skill yang Masih Lemah dari Kalimat Anda
-          </h3>
+        <div class="skills-group">
+          <div class="skills-group-title title-rose">
+            <i data-lucide="triangle-alert" style="width:12px;height:12px;color:var(--rose)"></i>
+            Perlu Ditingkatkan
+          </div>
           {% if detected_weak %}
-            <div class="flex flex-wrap gap-2">
-              {% for skill in detected_weak %}
-                <span class="inline-flex items-center rounded-full bg-rose-100 px-3.5 py-1.5 text-xs font-bold text-rose-800 shadow-sm border border-rose-200">
-                  {{ skill }}
-                </span>
-              {% endfor %}
-            </div>
-          {% else %}
-            <p class="text-sm font-semibold text-slate-500">Tidak ada kelemahan spesifik yang terdeteksi dalam kalimat.</p>
-          {% endif %}
+          <div class="skill-tags">{% for skill in detected_weak %}<span class="tag-rose">{{ skill }}</span>{% endfor %}</div>
+          {% else %}<div class="no-skill">Tidak ada kelemahan yang terdeteksi.</div>{% endif %}
         </div>
-      </div>
-      
-      <p class="text-xs text-slate-400 mt-6 text-center font-medium">
-        *Analisis teks dilakukan secara lokal menggunakan NLP untuk memberikan penyesuaian skor kecocokan role sebesar +0% s.d. +5%.
-      </p>
-    </section>
-    {% endif %}
 
-    <!-- TOGGLE BUTTON FOR OTHERS -->
-    <div class="text-center mb-8">
-      <button id="toggleBtn" class="inline-flex items-center gap-2 rounded-full bg-slate-200/60 px-6 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-300/60 hover:text-slate-800">
-        <span id="toggleText">Lihat Role Lainnya</span>
-        <svg id="toggleIcon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
+        <div class="nlp-note">
+          <i data-lucide="shield-check" style="width:11px;height:11px;display:inline;vertical-align:middle;margin-right:3px"></i>
+          Diproses 100% lokal — data tidak dikirim keluar
+        </div>
+      {% else %}
+        <div class="nlp-empty">
+          <i data-lucide="message-square-dashed"></i>
+          Kamu melewati langkah curhat.<br>
+          <a href="/curhat" style="color:var(--green);font-weight:600;text-decoration:none">Tambahkan ceritamu →</a><br>untuk hasil yang lebih personal.
+        </div>
+      {% endif %}
+    </div>
+
+  </div><!-- end .main-columns -->
+
+  <!-- OTHER ROLES -->
+  <div class="others-section">
+    <div class="section-head">
+      <h2>Peran IT Lainnya</h2>
+      <button class="btn-toggle" id="toggleBtn">
+        <span id="toggleText">Tampilkan</span>
+        <i data-lucide="chevron-down" class="toggle-icon" id="toggleIcon" style="width:14px;height:14px"></i>
       </button>
     </div>
 
-    <!-- OTHER ROLES (HIDDEN BY DEFAULT) -->
-    <div id="othersContainer" class="hidden space-y-5 mb-12">
+    <div class="others-grid" id="othersList" style="display:none">
       {% for item in ranking[1:] %}
-      <div class="rounded-3xl bg-white p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 transition hover:border-teal-200">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <div>
-            <h3 class="text-2xl font-extrabold text-slate-900">{{ item.role }}</h3>
-            <p class="text-sm font-bold text-teal-600 mt-1">{{ item.label }}</p>
+      <div class="other-card">
+        <div class="other-card-top">
+          <div class="other-left">
+            <h3>{{ item.role }}</h3>
+            <p>{{ item.label }}</p>
           </div>
-          <div class="flex flex-col items-end gap-1">
-            <div class="inline-flex items-center justify-center rounded-3xl bg-slate-100 px-5 py-2 font-black text-slate-800">
-              {{ '%.0f'|format(item.score) }}% Level Cocok
-            </div>
+          <div class="other-right">
+            <div class="other-score">{{ '%.0f'|format(item.score) }}%</div>
             {% if item.nlp_bonus and item.nlp_bonus > 0 %}
-            <span class="text-[10px] font-bold text-emerald-600">+{{ '%.1f'|format(item.nlp_bonus) }}% NLP Bonus</span>
-            <span class="text-[9px] font-semibold text-slate-400">(Fuzzy: {{ '%.0f'|format(item.original_score) }}%)</span>
+            <div class="other-bonus">+{{ '%.1f'|format(item.nlp_bonus) }}% bonus</div>
+            <div class="other-fuzzy">Fuzzy: {{ '%.0f'|format(item.original_score) }}%</div>
             {% endif %}
           </div>
         </div>
-
-        <div class="text-sm text-slate-600">
-          <h4 class="font-bold text-slate-800 mb-2">Insight Singkat:</h4>
-          <ul class="space-y-2 list-disc pl-5 marker:text-teal-400">
-            {% if item.gap_lines %}
-            <li>Fokus perbaiki: <span class="font-semibold">{{ item.gap_lines[0].split(' - ')[1].split(':')[0] }}</span></li>
-            {% endif %}
-            <li>{{ item.recommendations[0] }}</li>
-          </ul>
+        {% if item.gap_lines %}
+        <div class="other-insight">
+          <i data-lucide="lightbulb" style="width:13px;height:13px;color:var(--amber);flex-shrink:0;margin-top:1px"></i>
+          Tingkatkan: <strong style="color:var(--slate-700);margin-left:3px">{{ item.gap_lines[0].split(': ')[0] }}</strong>
         </div>
+        {% endif %}
       </div>
       {% endfor %}
     </div>
+  </div>
 
-    <!-- ACTION BUTTONS -->
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12 border-t border-slate-200/60 pt-10">
-      <a
-        href="/quiz/1"
-        class="w-full sm:w-auto rounded-full border-2 border-slate-300 bg-transparent px-8 py-4 text-center text-sm font-bold text-slate-600 transition hover:border-slate-400 hover:bg-slate-100"
-      >
-        Edit Jawaban
-      </a>
-      <form method="post" action="/result" class="w-full sm:w-auto">
-        <button
-          type="submit"
-          class="w-full sm:w-auto rounded-full bg-slate-900 px-8 py-4 text-sm font-bold text-white shadow-xl transition-all hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-2xl"
-        >
-          Coba Lagi dari Awal
-        </button>
-      </form>
-    </div>
-  </main>
+  <!-- ACTION BAR -->
+  <div class="action-bar">
+    <a href="/quiz/1" class="btn-secondary">
+      <i data-lucide="pencil" style="width:14px;height:14px"></i>
+      Ubah Jawaban
+    </a>
+    <form method="post" action="/result" style="display:inline">
+      <button type="submit" class="btn-restart">
+        <i data-lucide="rotate-ccw" style="width:14px;height:14px"></i>
+        Mulai Ulang
+      </button>
+    </form>
+  </div>
+</main>
 
-  <script>
-    const btn = document.getElementById('toggleBtn');
-    const container = document.getElementById('othersContainer');
-    const text = document.getElementById('toggleText');
-    const icon = document.getElementById('toggleIcon');
+<script>
+  lucide.createIcons();
 
-    btn.addEventListener('click', () => {
-      container.classList.toggle('hidden');
-      if (container.classList.contains('hidden')) {
-        text.textContent = 'Lihat Role Lainnya';
-        icon.classList.remove('rotate-180');
-      } else {
-        text.textContent = 'Sembunyikan Role Lainnya';
-        icon.classList.add('rotate-180');
-      }
-    });
-  </script>
+  const btn = document.getElementById('toggleBtn');
+  const list = document.getElementById('othersList');
+  const txt = document.getElementById('toggleText');
+  const icon = document.getElementById('toggleIcon');
+  btn.addEventListener('click', () => {
+    const open = list.style.display !== 'none';
+    list.style.display = open ? 'none' : 'grid';
+    txt.textContent = open ? 'Tampilkan' : 'Sembunyikan';
+    icon.classList.toggle('open', !open);
+  });
+</script>
 </body>
 </html>

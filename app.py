@@ -4,7 +4,7 @@ import utils
 
 
 app = Flask(__name__)
-APP_NAME = "coock.in"
+APP_NAME = "konsul.in"
 app.secret_key = "coock-in-sispak-secret"
 
 
