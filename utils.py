@@ -1,3 +1,5 @@
+import os
+import re
 import numpy as np
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
@@ -311,9 +313,257 @@ def _evaluate_role(role_name, role_key, answers, cfg):
 	}
 
 
-def evaluate_all_roles(answers):
+def evaluate_all_roles(answers, strong_skills=None):
 	results = []
 	for role_name, cfg in ROLE_CONFIG.items():
 		role_key = role_name.lower().replace(" ", "_")
-		results.append(_evaluate_role(role_name, role_key, answers, cfg))
+		role_res = _evaluate_role(role_name, role_key, answers, cfg)
+		
+		role_res["original_score"] = role_res["score"]
+		role_res["nlp_bonus"] = 0.0
+		
+		if strong_skills:
+			bonus = 0.0
+			for skill_idx in strong_skills:
+				if skill_idx in cfg.get("core", []):
+					bonus += 1.5
+				elif skill_idx in cfg.get("bonus", []):
+					bonus += 0.75
+			bonus = min(5.0, bonus)
+			
+			role_res["score"] = min(100.0, role_res["score"] + bonus)
+			role_res["nlp_bonus"] = bonus
+			role_res["label"] = label_from_score(role_res["score"])
+			
+		results.append(role_res)
 	return sorted(results, key=lambda item: item["score"], reverse=True)
+
+
+def load_stopwords(path):
+	if os.path.exists(path):
+		with open(path, 'r', encoding='utf-8') as f:
+			return set(word.strip().lower() for word in f.read().splitlines() if word.strip())
+	return set()
+
+
+class INIdrisStemmer:
+	def __init__(self):
+		self.dictionary = set()
+		self.load_dictionary("kata-dasar.txt")
+		self.suffixes_list = sorted([
+			"an","at","i", "iah", "ilah", "in","is","isme","kan","lah","nya","wan","wi", "tah", "ku", "mu"
+		], key=len, reverse=True)
+		self.prefixes_list = sorted([
+			"be","bel","ber","di","dwi","ke","me","mem","men","meng","meny","mono","pe","pel","pem","pen","peng","peny","per","pra","pro","se","sub","ter"
+		], key=len, reverse=True)
+
+	def load_dictionary(self, path):
+		if os.path.exists(path):
+			with open(path, 'r', encoding='utf-8') as f:
+				words = f.read().splitlines()
+				self.dictionary = set(word.strip().lower() for word in words if word.strip())
+
+	def is_vowel(self, char):
+		return char.lower() in 'aiueo'
+
+	def remove_suffix(self, word):
+		for suffix in self.suffixes_list:
+			if word.endswith(suffix):
+				if len(word) > len(suffix):
+					return word[:-len(suffix)]
+		return word
+
+	def remove_prefix(self, word):
+		for prefix in self.prefixes_list:
+			if word.startswith(prefix):
+				if len(word) > len(prefix):
+					return word[len(prefix):]
+		return word
+
+	def apply_rule2(self, word):
+		if (word.startswith("men") or word.startswith("pen")) and len(word) > 3 and self.is_vowel(word[3]):
+			return "t" + word[3:]
+		if (word.startswith("meng") or word.startswith("peng")) and len(word) > 4 and self.is_vowel(word[4]):
+			return "k" + word[4:]
+		if (word.startswith("meny") or word.startswith("peny")) and len(word) > 4 and self.is_vowel(word[4]):
+			return "s" + word[4:]
+		if (word.startswith("mem") or word.startswith("pem")) and len(word) > 3 and self.is_vowel(word[3]):
+			return "p" + word[3:]
+		return word
+
+	def stem(self, word):
+		current_word = word
+		if current_word in self.dictionary:
+			return current_word
+		for prefix in self.prefixes_list:
+			if current_word.startswith(prefix):
+				if len(current_word) > len(prefix):
+					candidate = current_word[len(prefix):]
+					if candidate in self.dictionary:
+						return candidate
+		processed_rule2 = self.apply_rule2(current_word)
+		if processed_rule2 != current_word:
+			if processed_rule2 in self.dictionary:
+				return processed_rule2
+			prefix_rule2 = self.remove_prefix(processed_rule2)
+			if prefix_rule2 in self.dictionary:
+				return prefix_rule2
+		processed_suffix = self.remove_suffix(current_word)
+		if processed_suffix != current_word:
+			if len(processed_suffix) > 1:
+				return self.stem(processed_suffix)
+		return word
+
+
+KEYWORD_TO_METRIC = {
+	# Programming Logic (1)
+	"problem solving": 1, "clean code": 1, "logika": 1, "algoritma": 1,
+	# Web Logic & JS (2)
+	"javascript": 2, "js": 2, "nodejs": 2, "node.js": 2, "node": 2, "asynchronous": 2, "async": 2,
+	# Frontend UI (3)
+	"html": 3, "css": 3, "tailwind": 3, "responsive": 3, "ui": 3, "ux": 3, "bootstrap": 3,
+	# JS Framework (4)
+	"react": 4, "reactjs": 4, "vue": 4, "vuejs": 4, "nextjs": 4, "next.js": 4, "nuxt": 4, "state management": 4, "redux": 4,
+	# Mobile Development (5)
+	"flutter": 5, "kotlin": 5, "swift": 5, "android": 5, "ios": 5, "mobile": 5,
+	# Server Side (6)
+	"backend": 6, "go": 6, "golang": 6, "python": 6, "java": 6, "server": 6,
+	# Backend Framework (7)
+	"express": 7, "expressjs": 7, "gin": 7, "fiber": 7, "flask": 7, "django": 7, "laravel": 7,
+	# Database SQL (8)
+	"sql": 8, "mysql": 8, "postgresql": 8, "postgres": 8, "sqlite": 8, "oracle": 8,
+	# NoSQL/Vector DB (9)
+	"nosql": 9, "mongodb": 9, "mongo": 9, "redis": 9, "firebase": 9, "firestore": 9, "vector db": 9,
+	# API Development (10)
+	"api": 10, "restful": 10, "rest api": 10, "websocket": 10, "graphql": 10,
+	# Authentication (11)
+	"jwt": 11, "oauth": 11, "auth": 11, "autentikasi": 11, "security": 11, "keamanan": 11,
+	# Version Control (12)
+	"git": 12, "github": 12, "gitlab": 12,
+	# Cloud & DevOps (13)
+	"docker": 13, "kubernetes": 13, "k8s": 13, "ci/cd": 13, "cicd": 13, "aws": 13, "gcp": 13, "azure": 13, "cloud": 13, "devops": 13,
+	# System Integration (14)
+	"microservices": 14, "microservice": 14, "kafka": 14, "rabbitmq": 14,
+	# Monitoring & Logging (15)
+	"logging": 15, "log": 15, "debugging": 15, "grafana": 15, "elk": 15, "sentry": 15, "monitoring": 15,
+	# Performance (16)
+	"optimasi": 16, "scalability": 16, "speed": 16, "lazy loading": 16, "performa": 16,
+	# AI & ML Core (17)
+	"machine learning": 17, "ml": 17, "deep learning": 17, "model": 17, "training": 17,
+	# Generative AI (18)
+	"llm": 18, "rag": 18, "prompt": 18, "openai": 18, "chatgpt": 18, "ai agent": 18,
+	# AI Framework (19)
+	"langchain": 19, "llamaindex": 19,
+	# Data Processing (20)
+	"pandas": 20, "numpy": 20, "scipy": 20, "cleaning": 20,
+	# Data Analysis (21)
+	"statistik": 21, "statistika": 21, "regression": 21, "regresi": 21, "clustering": 21,
+	# Data Visualization (22)
+	"tableau": 22, "powerbi": 22, "power bi": 22, "matplotlib": 22, "seaborn": 22,
+	# Feature Engineering (23)
+	"feature engineering": 23, "extraction": 23,
+	# Design Tools (24)
+	"figma": 24, "sketch": 24, "adobe xd": 24
+}
+
+
+def format_keyword(kw):
+	upper_keywords = {
+		"js", "html", "css", "sql", "nosql", "api", "jwt", "oauth", "cicd", "ci/cd", 
+		"aws", "gcp", "azure", "db", "ai", "ml", "llm", "rag", "elk", "ux", "ui", "k8s"
+	}
+	if kw.lower() in upper_keywords:
+		return kw.upper()
+	if kw.lower() in ["nodejs", "node.js", "nextjs", "next.js", "vuejs", "reactjs", "expressjs"]:
+		return {
+			"nodejs": "Node.js",
+			"node.js": "Node.js",
+			"nextjs": "Next.js",
+			"next.js": "Next.js",
+			"vuejs": "Vue.js",
+			"reactjs": "React.js",
+			"expressjs": "Express.js"
+		}.get(kw.lower(), kw.title())
+	return kw.title()
+
+
+def analyze_curhat(text):
+	if not text:
+		return {
+			"strong_ids": [],
+			"weak_ids": [],
+			"strong_skills": [],
+			"weak_skills": []
+		}
+	
+	stemmer = INIdrisStemmer()
+	stopwords = load_stopwords("stopwords.txt")
+	
+	clauses = re.split(r'[,.;!?\n]|\b(?:tapi|tetapi|namun|sedangkan|melainkan)\b', text.lower())
+	
+	detected_skills = {}
+	
+	negation_words = {
+		'belum', 'kurang', 'lemah', 'bingung', 'sulit', 'susah', 'kesulitan',
+		'tidak', 'tak', 'belajar', 'pemula', 'basic', 'sedikit', 'lupa', 'ragu',
+		'gap', 'lemah', 'lemahnya'
+	}
+	
+	for clause in clauses:
+		clause = clause.strip()
+		if not clause:
+			continue
+		
+		clean_clause = re.sub(r"[^a-zA-Z0-9\s]", " ", clause)
+		tokens = clean_clause.split()
+		
+		stemmed_tokens = []
+		for token in tokens:
+			if token not in stopwords:
+				stemmed_tokens.append(stemmer.stem(token))
+			else:
+				stemmed_tokens.append(token)
+		
+		has_negation = False
+		for token in tokens + stemmed_tokens:
+			if token in negation_words:
+				has_negation = True
+				break
+		
+		clause_strength = 0.0 if has_negation else 1.0
+		
+		for kw, skill_idx in KEYWORD_TO_METRIC.items():
+			pattern = r'\b' + re.escape(kw) + r'\b'
+			if re.search(pattern, clause):
+				if skill_idx not in detected_skills:
+					detected_skills[skill_idx] = {"strengths": [], "keywords": set()}
+				detected_skills[skill_idx]["strengths"].append(clause_strength)
+				detected_skills[skill_idx]["keywords"].add(kw)
+				
+	strong_ids = []
+	weak_ids = []
+	strong_skills = []
+	weak_skills = []
+	
+	for skill_idx, info in detected_skills.items():
+		strengths = info["strengths"]
+		avg_strength = sum(strengths) / len(strengths)
+		category = SKILL_METRICS[skill_idx - 1]["category"]
+		
+		formatted_kws = [format_keyword(kw) for kw in info["keywords"]]
+		kws_str = ", ".join(sorted(formatted_kws))
+		display_name = f"{category} ({kws_str})"
+		
+		if avg_strength >= 0.5:
+			strong_ids.append(skill_idx)
+			strong_skills.append(display_name)
+		else:
+			weak_ids.append(skill_idx)
+			weak_skills.append(display_name)
+			
+	return {
+		"strong_ids": strong_ids,
+		"weak_ids": weak_ids,
+		"strong_skills": strong_skills,
+		"weak_skills": weak_skills
+	}

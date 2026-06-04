@@ -78,7 +78,7 @@ def quiz(step):
 
 			next_step = step + 1
 			if next_step > total:
-				return redirect(url_for("result"))
+				return redirect(url_for("curhat"))
 			return redirect(url_for("quiz", step=next_step))
 
 	question = utils.SKILL_METRICS[step - 1]
@@ -96,10 +96,33 @@ def quiz(step):
 	)
 
 
+@app.route("/curhat", methods=["GET", "POST"])
+def curhat():
+	answers = _get_answers_state()
+	first_missing = _first_unanswered_step(answers)
+	if first_missing is not None:
+		return redirect(url_for("quiz", step=first_missing))
+
+	if request.method == "POST":
+		curhat_text = request.form.get("curhat_text", "").strip()
+		analysis = utils.analyze_curhat(curhat_text)
+		session["curhat_text"] = curhat_text
+		session["curhat_analysis"] = analysis
+		return redirect(url_for("result"))
+
+	return render_template(
+		"curhat.html",
+		app_name=APP_NAME,
+		total_questions=len(utils.SKILL_METRICS),
+	)
+
+
 @app.route("/result", methods=["GET", "POST"])
 def result():
 	if request.method == "POST":
 		_init_answers_state()
+		session.pop("curhat_text", None)
+		session.pop("curhat_analysis", None)
 		return redirect(url_for("quiz", step=1))
 
 	answers = _get_answers_state()
@@ -107,14 +130,23 @@ def result():
 	if first_missing is not None:
 		return redirect(url_for("quiz", step=first_missing))
 
-	ranking = utils.evaluate_all_roles(answers)
+	analysis = session.get("curhat_analysis")
+	strong_skills = analysis.get("strong_ids", []) if analysis else []
+	
+	ranking = utils.evaluate_all_roles(answers, strong_skills=strong_skills)
 	top_role = ranking[0]["role"] if ranking else "-"
+
+	detected_strong = analysis.get("strong_skills", []) if analysis else []
+	detected_weak = analysis.get("weak_skills", []) if analysis else []
 
 	return render_template(
 		"result.html",
 		app_name=APP_NAME,
 		ranking=ranking,
 		top_role=top_role,
+		detected_strong=detected_strong,
+		detected_weak=detected_weak,
+		curhat_text=session.get("curhat_text", "")
 	)
 
 
