@@ -191,11 +191,48 @@
     footer{border-top:1px solid var(--border);padding:2rem 1.5rem;text-align:center;font-size:0.78rem;color:var(--muted);background:var(--white)}
     footer strong{color:var(--green)}
 
+    .cta-buttons-container {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+    }
+    .btn-secondary-custom {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2.25rem;
+      border-radius: 999px;
+      background: var(--white);
+      color: var(--green);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      border: 2px solid var(--green);
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(22,163,74,0.1), 0 1px 3px rgba(0,0,0,0.05);
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+    .btn-secondary-custom:hover {
+      transform: translateY(-3px);
+      background: var(--green-light);
+      box-shadow: 0 12px 30px rgba(22,163,74,0.2);
+    }
+    .btn-primary svg, .btn-secondary-custom svg {
+      width: 18px;
+      height: 18px;
+    }
+
     @media(max-width:640px){
       nav{padding:.875rem 1rem}
       .stats-bar{gap:1.5rem}
       .steps-grid{grid-template-columns:1fr;gap:1.5rem}
       .steps-grid::before{display:none}
+      .cta-buttons-container{flex-direction:column;width:100%;align-items:stretch}
+      .btn-primary, .btn-secondary-custom{width:100%;justify-content:center}
     }
   </style>
 </head>
@@ -212,17 +249,27 @@
     <div class="hero-bg-circle-2"></div>
     <div class="hero-eyebrow"><div class="eyebrow-dot"></div>Sistem Pakar Karier Teknologi</div>
     <h1>Temukan Peran IT yang<br><span class="accent">Paling Cocok</span> untuk Kamu</h1>
-    <p class="hero-desc">Jawab {{ total_questions }} pertanyaan, ceritakan pengalamanmu, dan dapatkan rekomendasi karier IT yang dipersonalisasi — berbasis Fuzzy Logic & NLP lokal, tanpa AI cloud.</p>
+    <p class="hero-desc">Pilih metode kuis terstruktur berbasis kriteria pakar, atau ceritakan langsung pengalamannmu melalui teks untuk dianalisis oleh NLP secara lokal.</p>
     <div class="hero-cta">
-      <form method="post" style="display:inline">
-        <button type="submit" class="btn-primary">
-          Mulai Asesmen Sekarang
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-        </button>
-      </form>
+      <div class="cta-buttons-container">
+        <form method="post" style="display:inline">
+          <input type="hidden" name="flow_type" value="quiz">
+          <button type="submit" class="btn-primary">
+            Kuis Pilihan Ganda (Fuzzy)
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+        </form>
+        <form method="post" style="display:inline">
+          <input type="hidden" name="flow_type" value="curhat">
+          <button type="submit" class="btn-secondary-custom">
+            Konsultasi Tulis (NLP)
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          </button>
+        </form>
+      </div>
       <div class="hero-note">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        Gratis · {{ total_questions }} Pertanyaan · Tanpa Daftar Akun
+        Gratis · Analisis Fuzzy & NLP Berjalan Secara Lokal · 100% Offline
       </div>
     </div>
   </section>
@@ -263,13 +310,23 @@
 
   <div class="cta-section">
     <h2>Siap Menemukan Jalur Kariermu?</h2>
-    <p>Mulai asesmen gratis sekarang dan temukan peran IT yang paling pas untukmu.</p>
-    <form method="post" style="display:inline">
-      <button type="submit" class="btn-primary">
-        Mulai Asesmen Gratis
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-      </button>
-    </form>
+    <p>Pilih metode kuis terstruktur atau mulai tulis curhatan secara langsung.</p>
+    <div class="cta-buttons-container">
+      <form method="post" style="display:inline">
+        <input type="hidden" name="flow_type" value="quiz">
+        <button type="submit" class="btn-primary">
+          Kuis Terstruktur (Fuzzy)
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+      </form>
+      <form method="post" style="display:inline">
+        <input type="hidden" name="flow_type" value="curhat">
+        <button type="submit" class="btn-secondary-custom">
+          Konsultasi Tulis (NLP)
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        </button>
+      </form>
+    </div>
   </div>
 
   <footer><p>© 2025 <strong>konsul.in</strong> · Sistem Pakar Karier IT · Fuzzy Logic & NLP Lokal</p></footer>

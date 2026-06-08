@@ -45,8 +45,18 @@ def _parse_selected_value(raw_value):
 @app.route("/", methods=["GET", "POST"])
 def onboarding():
 	if request.method == "POST":
-		_init_answers_state()
-		return redirect(url_for("quiz", step=1))
+		flow_type = request.form.get("flow_type", "quiz")
+		session["flow_type"] = flow_type
+		if flow_type == "curhat":
+			session.pop("answers", None)
+			session.pop("curhat_text", None)
+			session.pop("curhat_analysis", None)
+			return redirect(url_for("curhat"))
+		else:
+			_init_answers_state()
+			session.pop("curhat_text", None)
+			session.pop("curhat_analysis", None)
+			return redirect(url_for("quiz", step=1))
 
 	return render_template(
 		"index.html",
@@ -78,7 +88,7 @@ def quiz(step):
 
 			next_step = step + 1
 			if next_step > total:
-				return redirect(url_for("curhat"))
+				return redirect(url_for("result"))
 			return redirect(url_for("quiz", step=next_step))
 
 	question = utils.SKILL_METRICS[step - 1]
@@ -98,14 +108,22 @@ def quiz(step):
 
 @app.route("/curhat", methods=["GET", "POST"])
 def curhat():
-	answers = _get_answers_state()
-	first_missing = _first_unanswered_step(answers)
-	if first_missing is not None:
-		return redirect(url_for("quiz", step=first_missing))
+	flow_type = session.get("flow_type", "curhat")
+	
+	if flow_type == "quiz":
+		answers = _get_answers_state()
+		first_missing = _first_unanswered_step(answers)
+		if first_missing is not None:
+			return redirect(url_for("quiz", step=first_missing))
 
 	if request.method == "POST":
 		curhat_text = request.form.get("curhat_text", "").strip()
 		analysis = utils.analyze_curhat(curhat_text)
+		
+		if flow_type == "curhat":
+			answers = utils.extract_answers_from_curhat(curhat_text)
+			session["answers"] = answers
+			
 		session["curhat_text"] = curhat_text
 		session["curhat_analysis"] = analysis
 		return redirect(url_for("result"))
@@ -114,26 +132,32 @@ def curhat():
 		"curhat.html",
 		app_name=APP_NAME,
 		total_questions=len(utils.SKILL_METRICS),
+		flow_type=flow_type,
 	)
 
 
 @app.route("/result", methods=["GET", "POST"])
 def result():
 	if request.method == "POST":
-		_init_answers_state()
-		session.pop("curhat_text", None)
-		session.pop("curhat_analysis", None)
-		return redirect(url_for("quiz", step=1))
+		session.clear()
+		return redirect(url_for("onboarding"))
 
+	flow_type = session.get("flow_type", "quiz")
 	answers = _get_answers_state()
-	first_missing = _first_unanswered_step(answers)
-	if first_missing is not None:
-		return redirect(url_for("quiz", step=first_missing))
+	
+	if flow_type == "quiz":
+		first_missing = _first_unanswered_step(answers)
+		if first_missing is not None:
+			return redirect(url_for("quiz", step=first_missing))
 
 	analysis = session.get("curhat_analysis")
-	strong_skills = analysis.get("strong_ids", []) if analysis else []
 	
-	ranking = utils.evaluate_all_roles(answers, strong_skills=strong_skills)
+	if flow_type == "curhat":
+		ranking = utils.evaluate_all_roles(answers, strong_skills=None)
+	else:
+		strong_skills = analysis.get("strong_ids", []) if analysis else []
+		ranking = utils.evaluate_all_roles(answers, strong_skills=strong_skills)
+		
 	top_role = ranking[0]["role"] if ranking else "-"
 
 	detected_strong = analysis.get("strong_skills", []) if analysis else []
@@ -146,7 +170,8 @@ def result():
 		top_role=top_role,
 		detected_strong=detected_strong,
 		detected_weak=detected_weak,
-		curhat_text=session.get("curhat_text", "")
+		curhat_text=session.get("curhat_text", ""),
+		flow_type=flow_type,
 	)
 
 

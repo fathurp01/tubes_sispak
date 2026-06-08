@@ -417,53 +417,53 @@ class INIdrisStemmer:
 
 KEYWORD_TO_METRIC = {
 	# Programming Logic (1)
-	"problem solving": 1, "clean code": 1, "logika": 1, "algoritma": 1,
+	"problem solving": 1, "clean code": 1, "logika": 1, "algoritma": 1, "ngoding": 1, "koding": 1, "coding": 1, "pemrograman": 1, "program": 1, "programming": 1, "logic": 1, "memecahkan masalah": 1, "bahasa": 1, "bahasa pemrograman": 1,
 	# Web Logic & JS (2)
-	"javascript": 2, "js": 2, "nodejs": 2, "node.js": 2, "node": 2, "asynchronous": 2, "async": 2,
+	"javascript": 2, "js": 2, "nodejs": 2, "node.js": 2, "node": 2, "asynchronous": 2, "async": 2, "event loop": 2, "callbacks": 2, "promises": 2,
 	# Frontend UI (3)
-	"html": 3, "css": 3, "tailwind": 3, "responsive": 3, "ui": 3, "ux": 3, "bootstrap": 3,
+	"html": 3, "css": 3, "tailwind": 3, "responsive": 3, "ui": 3, "ux": 3, "bootstrap": 3, "desain": 3, "tampilan": 3, "slicing": 3, "layout": 3, "web design": 3, "responsif": 3,
 	# JS Framework (4)
-	"react": 4, "reactjs": 4, "vue": 4, "vuejs": 4, "nextjs": 4, "next.js": 4, "nuxt": 4, "state management": 4, "redux": 4,
+	"react": 4, "reactjs": 4, "react.js": 4, "vue": 4, "vuejs": 4, "vue.js": 4, "nextjs": 4, "next.js": 4, "nuxt": 4, "state management": 4, "redux": 4, "pinia": 4, "angular": 4, "vuetify": 4,
 	# Mobile Development (5)
-	"flutter": 5, "kotlin": 5, "swift": 5, "android": 5, "ios": 5, "mobile": 5,
+	"flutter": 5, "kotlin": 5, "swift": 5, "android": 5, "ios": 5, "mobile": 5, "seluler": 5, "hp": 5, "hape": 5, "dart": 5, "react native": 5,
 	# Server Side (6)
-	"backend": 6, "go": 6, "golang": 6, "python": 6, "java": 6, "server": 6,
+	"backend": 6, "go": 6, "golang": 6, "python": 6, "java": 6, "server": 6, "sisi server": 6, "php": 6, "ruby": 6, "c#": 6, "net core": 6,
 	# Backend Framework (7)
-	"express": 7, "expressjs": 7, "gin": 7, "fiber": 7, "flask": 7, "django": 7, "laravel": 7,
+	"express": 7, "expressjs": 7, "gin": 7, "fiber": 7, "flask": 7, "django": 7, "laravel": 7, "codeigniter": 7, "ci": 7, "spring": 7, "spring boot": 7, "fastapi": 7, "sails": 7,
 	# Database SQL (8)
-	"sql": 8, "mysql": 8, "postgresql": 8, "postgres": 8, "sqlite": 8, "oracle": 8,
+	"sql": 8, "mysql": 8, "postgresql": 8, "postgres": 8, "sqlite": 8, "oracle": 8, "database": 8, "basis data": 8, "query": 8, "tabel": 8, "suka sql": 8, "optimasi sql": 8, "optimasi query": 8,
 	# NoSQL/Vector DB (9)
-	"nosql": 9, "mongodb": 9, "mongo": 9, "redis": 9, "firebase": 9, "firestore": 9, "vector db": 9,
+	"nosql": 9, "mongodb": 9, "mongo": 9, "redis": 9, "firebase": 9, "firestore": 9, "vector db": 9, "non-relasional": 9, "cassandra": 9, "milvus": 9, "pinecone": 9, "chromadb": 9,
 	# API Development (10)
-	"api": 10, "restful": 10, "rest api": 10, "websocket": 10, "graphql": 10,
+	"api": 10, "restful": 10, "rest api": 10, "websocket": 10, "graphql": 10, "endpoint": 10, "json": 10, "postman": 10,
 	# Authentication (11)
-	"jwt": 11, "oauth": 11, "auth": 11, "autentikasi": 11, "security": 11, "keamanan": 11,
+	"jwt": 11, "oauth": 11, "auth": 11, "autentikasi": 11, "security": 11, "keamanan": 11, "login": 11, "register": 11, "masuk": 11,
 	# Version Control (12)
-	"git": 12, "github": 12, "gitlab": 12,
+	"git": 12, "github": 12, "gitlab": 12, "commit": 12, "branch": 12, "branching": 12, "merge": 12, "pull request": 12, "pr": 12,
 	# Cloud & DevOps (13)
-	"docker": 13, "kubernetes": 13, "k8s": 13, "ci/cd": 13, "cicd": 13, "aws": 13, "gcp": 13, "azure": 13, "cloud": 13, "devops": 13,
+	"docker": 13, "kubernetes": 13, "k8s": 13, "ci/cd": 13, "cicd": 13, "aws": 13, "gcp": 13, "azure": 13, "cloud": 13, "devops": 13, "deploy": 13, "deployment": 13, "hosting": 13, "serverless": 13,
 	# System Integration (14)
-	"microservices": 14, "microservice": 14, "kafka": 14, "rabbitmq": 14,
+	"microservices": 14, "microservice": 14, "kafka": 14, "rabbitmq": 14, "integrasi": 14, "integration": 14,
 	# Monitoring & Logging (15)
-	"logging": 15, "log": 15, "debugging": 15, "grafana": 15, "elk": 15, "sentry": 15, "monitoring": 15,
+	"logging": 15, "log": 15, "debugging": 15, "grafana": 15, "elk": 15, "sentry": 15, "monitoring": 15, "pantau": 15, "observability": 15,
 	# Performance (16)
-	"optimasi": 16, "scalability": 16, "speed": 16, "lazy loading": 16, "performa": 16,
+	"optimasi": 16, "scalability": 16, "speed": 16, "lazy loading": 16, "performa": 16, "cepat": 16, "lambat": 16, "lemot": 16, "efisiensi": 16,
 	# AI & ML Core (17)
-	"machine learning": 17, "ml": 17, "deep learning": 17, "model": 17, "training": 17,
+	"machine learning": 17, "ml": 17, "deep learning": 17, "model": 17, "training": 17, "latih": 17, "data mining": 17, "klasifikasi": 17, "prediksi": 17,
 	# Generative AI (18)
-	"llm": 18, "rag": 18, "prompt": 18, "openai": 18, "chatgpt": 18, "ai agent": 18,
+	"llm": 18, "rag": 18, "prompt": 18, "openai": 18, "chatgpt": 18, "ai agent": 18, "generatif": 18,
 	# AI Framework (19)
 	"langchain": 19, "llamaindex": 19,
 	# Data Processing (20)
-	"pandas": 20, "numpy": 20, "scipy": 20, "cleaning": 20,
+	"pandas": 20, "numpy": 20, "scipy": 20, "cleaning": 20, "pembersihan data": 20, "data cleaning": 20, "transformasi data": 20,
 	# Data Analysis (21)
-	"statistik": 21, "statistika": 21, "regression": 21, "regresi": 21, "clustering": 21,
+	"statistik": 21, "statistika": 21, "regression": 21, "regresi": 21, "clustering": 21, "klaster": 21, "analisis data": 21,
 	# Data Visualization (22)
-	"tableau": 22, "powerbi": 22, "power bi": 22, "matplotlib": 22, "seaborn": 22,
+	"tableau": 22, "powerbi": 22, "power bi": 22, "matplotlib": 22, "seaborn": 22, "visualisasi": 22,
 	# Feature Engineering (23)
-	"feature engineering": 23, "extraction": 23,
+	"feature engineering": 23, "extraction": 23, "ekstraksi": 23,
 	# Design Tools (24)
-	"figma": 24, "sketch": 24, "adobe xd": 24
+	"figma": 24, "sketch": 24, "adobe xd": 24, "desain": 24
 }
 
 
@@ -499,14 +499,15 @@ def analyze_curhat(text):
 	stemmer = INIdrisStemmer()
 	stopwords = load_stopwords("stopwords.txt")
 	
-	clauses = re.split(r'[,.;!?\n]|\b(?:tapi|tetapi|namun|sedangkan|melainkan)\b', text.lower())
+	split_pattern = r'[;!?\n]|\.(?=\s|$)|(?:\b(?:tapi|tetapi|namun|sedangkan|melainkan)\b)|,\s*(?=saya|aku|kamu|dia|mereka|kita|kami|ia|bisa|suka|biasa|lancar|mahir|tidak|belum|kurang)'
+	clauses = re.split(split_pattern, text.lower())
 	
 	detected_skills = {}
 	
 	negation_words = {
 		'belum', 'kurang', 'lemah', 'bingung', 'sulit', 'susah', 'kesulitan',
 		'tidak', 'tak', 'belajar', 'pemula', 'basic', 'sedikit', 'lupa', 'ragu',
-		'gap', 'lemah', 'lemahnya'
+		'gap', 'lemah', 'lemahnya', 'terbatas', 'malas'
 	}
 	
 	for clause in clauses:
@@ -524,8 +525,10 @@ def analyze_curhat(text):
 			else:
 				stemmed_tokens.append(token)
 		
+		all_tokens = set(tokens + stemmed_tokens)
+		
 		has_negation = False
-		for token in tokens + stemmed_tokens:
+		for token in all_tokens:
 			if token in negation_words:
 				has_negation = True
 				break
@@ -533,12 +536,22 @@ def analyze_curhat(text):
 		clause_strength = 0.0 if has_negation else 1.0
 		
 		for kw, skill_idx in KEYWORD_TO_METRIC.items():
-			pattern = r'\b' + re.escape(kw) + r'\b'
-			if re.search(pattern, clause):
-				if skill_idx not in detected_skills:
-					detected_skills[skill_idx] = {"strengths": [], "keywords": set()}
-				detected_skills[skill_idx]["strengths"].append(clause_strength)
-				detected_skills[skill_idx]["keywords"].add(kw)
+			# Jika keyword memiliki spasi (frase), lakukan pencarian regex pada klausa asli
+			if " " in kw:
+				pattern = r'\b' + re.escape(kw) + r'\b'
+				if re.search(pattern, clause):
+					if skill_idx not in detected_skills:
+						detected_skills[skill_idx] = {"strengths": [], "keywords": set()}
+					detected_skills[skill_idx]["strengths"].append(clause_strength)
+					detected_skills[skill_idx]["keywords"].add(kw)
+			else:
+				# Jika single word, cocokkan dengan token asli atau hasil stemmed token
+				stemmed_kw = stemmer.stem(kw)
+				if kw in all_tokens or stemmed_kw in all_tokens:
+					if skill_idx not in detected_skills:
+						detected_skills[skill_idx] = {"strengths": [], "keywords": set()}
+					detected_skills[skill_idx]["strengths"].append(clause_strength)
+					detected_skills[skill_idx]["keywords"].add(kw)
 				
 	strong_ids = []
 	weak_ids = []
@@ -567,3 +580,22 @@ def analyze_curhat(text):
 		"strong_skills": strong_skills,
 		"weak_skills": weak_skills
 	}
+
+
+def extract_answers_from_curhat(curhat_text):
+	analysis = analyze_curhat(curhat_text)
+	strong_ids = analysis.get("strong_ids", [])
+	weak_ids = analysis.get("weak_ids", [])
+	
+	# Default score: 2.0 (Pernah coba / baseline low) untuk yang tidak disebut
+	answers = [2.0] * len(SKILL_METRICS)
+	
+	# Strong skills -> 4.5 (Mandiri / Mahir)
+	for idx in strong_ids:
+		answers[idx - 1] = 4.5
+		
+	# Weak skills -> 1.0 (Belum pernah / Lemah)
+	for idx in weak_ids:
+		answers[idx - 1] = 1.0
+		
+	return answers
